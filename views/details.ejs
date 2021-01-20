@@ -1,0 +1,60 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="details content">
+
+    <div class="create-blog content">
+      <form action="/users" method="POST">
+        <label for="nom">nom:</label>
+        <input type="text" id="nom" name="nom" value="<%=user.nom %>" required>
+        <label for="prenom">prenom:</label>
+        <input type="text" id="prenom" name="prenom"  value="<%=user.prenom %>"  required>
+        <label for="email">email:</label>
+        <input type="email" id="email" name="email"  value="<%=user.email %>" >
+  
+        <label for="password">Password:</label>
+        <input type="password" id=" motdepasse" name=" motdepasse">
+        <button data-doc="<%= user.email %>">Modify</button>
+      </form>
+    </div>
+
+    <a class="delete" data-doc="<%= user.email %>">
+      <img src="/trashcan.svg" alt="delete icon">
+    </a>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script>
+    const aux = document.querySelector('a.delete');
+
+    aux.addEventListener('click', (e) => {
+      const endpoint = `/users/${aux.dataset.doc}`;
+
+      fetch(endpoint, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(data => window.location.href = data.redirect)
+      .catch(err => console.log(err));
+    });
+
+    const aux2 = document.querySelector('button');
+
+aux2.addEventListener('click', (e) => {
+  const endpoint = `/users/${aux2.dataset.doc}`;
+
+  fetch(endpoint, {
+    method: 'PUT',
+  })
+  .then(response => response.json())
+  .then(data => window.location.href = data.redirect)
+  .catch(err => console.log(err));
+});
+    
+  </script>
+</body>
+</html>
